@@ -41,28 +41,44 @@ data3d = data3d[:,:,0:len(xdata)]
 ydata_sandiego = data3d[120,120,...].tolist()
 
 # recuperer le signal tnt sur une echelle correspondante a la matrice 3d
-ydata_tnt = jdx_data['y'][0:len(xdata)]
+ydata_petrol = jdx_data['y'][0:len(xdata)]
 
 X_Sandiego = [120, 200,380]
 Y_Sandiego = [120, 200,380]
 
 
-data_dict = {'__header__': b'MATLAB 5.0 MAT-file, Platform: PCWIN64, Created on: Wed Nov 05 20:20:56 2014', '__version__': '1.0', '__globals__': [], 'Sandiego_before_insert': np.array(data3d  , dtype=np.float16)}
+data_dict = {'__header__': b'MATLAB 5.0 MAT-file, Platform: PCWIN64, Created on: Wed Nov 05 20:20:56 2014', '__version__': '1.0', '__globals__': [], 'Sandiego_before_insert_petrol': np.array(data3d  , dtype=np.float16)}
 
-sio.savemat("Sandiego_before_insert.mat", data_dict)
+sio.savemat("Sandiego_before_insert_petrol.mat", data_dict)
 
 """
 Insert a signal at specific location
 """
 for idx in range(len(X_Sandiego)):
-    data3d[X_Sandiego[idx],Y_Sandiego[idx],:] = ydata_tnt
-    data3d[X_Sandiego[idx],Y_Sandiego[idx],:] = ydata_tnt
+    data3d[X_Sandiego[idx],Y_Sandiego[idx],:] = ydata_petrol
+    data3d[X_Sandiego[idx],Y_Sandiego[idx],:] = ydata_petrol
 
 print(data3d.shape)
 
 """
 Save to Matlab
 """
-data_dict = {'__header__': b'MATLAB 5.0 MAT-file, Platform: PCWIN64, Created on: Wed Nov 05 20:20:56 2014', '__version__': '1.0', '__globals__': [], 'Sandiego_after_insert_tnt': np.array(data3d  , dtype=np.float16)}
+data_dict = {'__header__': b'MATLAB 5.0 MAT-file, Platform: PCWIN64, Created on: Wed Nov 05 20:20:56 2014', '__version__': '1.0', '__globals__': [], 'Sandiego_after_insert_petrol': np.array(data3d  , dtype=np.float16)}
 
-sio.savemat("Sandiego_after_insert_tnt.mat", data_dict)
+sio.savemat("Sandiego_after_insert_petrol.mat", data_dict)
+
+
+fig, (ax1,ax2) = plt.subplots(2)
+
+# Using set_dashes() to modify dashing of an existing line
+line1, = ax1.plot(xdata, ydata_sandiego, label='Sandiego')
+
+# Using plot(..., dashes=...) to set the dashing when creating a line
+line2, = ax2.plot(xdata, ydata_petrol, label='Petrol')
+
+ax1.legend()
+ax2.legend()
+
+plt.show()
+
+
