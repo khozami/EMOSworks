@@ -1,54 +1,115 @@
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-import scipy.io as sio
-import jcamp 
-
 import numpy as np
-# import HyperProTool as hyper
-import scipy.io as sio
-#from LRSR_1 import LRSR
 
-import matplotlib.pyplot as plt
-from matplotlib.collections import EventCollection
-import jcamp as jc
 
-jdx_data = jc.JCAMP_reader("C7H5N3O6NORMALX.jdx")
+# Fixing random state for reproducibility
+np.random.seed(19680801)
 
-xdata = np.linspace(1000, 7000, num=7152)
-xdata  = xdata[xdata < 2500]
-xdata  = xdata[xdata > 1000]
+figsrc, axsrc = plt.subplots()
+figzoom, axzoom = plt.subplots()
+axsrc.set(xlim=(0, 1), ylim=(0, 1), autoscale_on=False,
+          title='Click to zoom')
+axzoom.set(xlim=(0.45, 0.55), ylim=(0.4, 0.6), autoscale_on=False,
+           title='Zoom window')
 
-ydata = jdx_data['y'][0:len(xdata)]
+x, y, s, c = np.random.rand(4, 200)
+s *= 200
 
-# plot the data
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
-ax.plot(xdata, ydata, color='tab:blue')
+axsrc.scatter(x, y, s, c)
+axzoom.scatter(x, y, s, c)
 
-# set the limits
-#ax.set_xlim([1000, 2500])
-#ax.set_ylim([0, 0.006])
 
-ax.set_xlabel("Longueur d'onde (nm)", fontsize=15)
-ax.set_ylabel("Valeur de transmittance", fontsize=15)
+def on_press(event):
+    if event.button != 1:
+        return
+    x, y = event.xdata, event.ydata
+    axzoom.set_xlim(x - 0.1, x + 0.1)
+    axzoom.set_ylim(y - 0.1, y + 0.1)
+    figzoom.canvas.draw()
 
-ax.set_title("Signature spectrale d'un pixel")
-
-# display the plot
+figsrc.canvas.mpl_connect('button_press_event', on_press)
 plt.show()
 
-#trying to male mat file from numpy data
-# data3d.dtype
-#transformed_data3d = {'__header__': b'MATLAB 5.0 MAT-file, Platform: PCWIN64, Created on: Wed Nov 05 20:20:56 2014', '__version__': '1.0', '__globals__': [], 'Sandiego2': data3d}
-#norm = np.linalg.norm(data3d)
-#normal_array = data3d/norm
-#print("---------------------------TRANSFORMED DATA--------------------------------------")
-#print(transformed_data3d)
-#print("---------------------------DATA AS IS--------------------------------------")
 
 
-#data_truth = data3d > 1.0
-#print(data3d.shape)
-# sio.savemat("Sandiego2.mat", transformed_data3d)
-#print(data3d[2:4, 2:4, ...])
+
+"""
+fonction affiche zoom
+"""
+"""
+
+np.random.seed(19680801)
+
+figsrc, axsrc = plt.subplots()
+figzoom, axzoom = plt.subplots()
+axsrc.set(xlim=(0, 1), ylim=(0, 1), autoscale_on=False,
+          title='Click to zoom')
+axzoom.set(xlim=(0.45, 0.55), ylim=(0.4, 0.6), autoscale_on=False,
+           title='Zoom window')
+
+x, y, s, c = np.random.rand(4, 200)
+s *= 200
+
+axsrc.scatter(xdata, ydata_sandiego)
+axzoom.scatter(x, y, s, c)
+
+
+def on_press(event):
+    if event.button != 1:
+        return
+    x, y = event.xdata, event.ydata
+    axzoom.set_xlim(x - 0.1, x + 0.1)
+    axzoom.set_ylim(y - 0.1, y + 0.1)
+    figzoom.canvas.draw()
+
+figsrc.canvas.mpl_connect('button_press_event', on_press)
+plt.show()
+"""
+
+"""
+FIN zoom
+"""
+
+
+"""
+# normalise data set [0,1]
+for idx in range(400):
+    norm = np.linalg.norm(data3d[idx][:][:])
+    normal_array = data3d[idx][:][:]/norm
+    data3d[idx][:][:] = normal_array
+"""
+
+
+
+"""
+Save chunks of .mat
+"""
+
+"""
+start = 0
+for idx in range(0,len(xdata), 21):
+    #data_dict = {'__header__': b'MATLAB 5.0 MAT-file, Platform: PCWIN64, Created on: Wed Nov 05 20:20:56 2014', '__version__': '1.0', '__globals__': [], 'new_Sandiego': np.array(data3d[:,:,start:start+20]  , dtype=np.float16)}
+    print("idx",idx)
+    print("len xdata", len(xdata))
+    
+"""
+
+#sio.savemat("newSandiego.mat", data_dict)
+
+
+#ydata = data3d[120,120,...].tolist()
+
+
+fig, (ax1,ax2) = plt.subplots(2)
+
+# Using set_dashes() to modify dashing of an existing line
+line1, = ax1.plot(xdata, ydata_sandiego, label='Sandiego')
+
+# Using plot(..., dashes=...) to set the dashing when creating a line
+line2, = ax2.plot(xdata, ydata_tnt, label='TNT')
+
+ax1.legend()
+ax2.legend()
+
+#plt.show()
+

@@ -10,9 +10,9 @@ from matplotlib.collections import EventCollection
 jdx_data = jc.JCAMP_reader("C7H5N3O6NORMALX.jdx")
 
 # data pre-precessing
-data = sio.loadmat("PaviaU.mat")
+data = sio.loadmat("Sandiego.mat")
 
-data3d = np.array(data["paviaU"], dtype=float)
+data3d = np.array(data["Sandiego"], dtype=float)
 
 # normalise data set [0,1]
 """
