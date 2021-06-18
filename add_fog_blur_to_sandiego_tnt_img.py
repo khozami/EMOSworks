@@ -84,8 +84,14 @@ for i in range(0,10, 3):
     print("i==", i, "i+3 == ", i+3)
     im1 = data3d_brut[:,:,i:i+4] # [1,4[
     #im1[:,:,1] = cv2.blur(image_HLS[:,:,1] ,(10,10), 0)
-    cv2.imshow("Result{}".format(i), im1)
-    cv2.imwrite("Result{}.jpg".format(i), im1)
+    
+    cv2.imshow("Result BEFORE BLUR{}".format(i), im1)
+    
+    im1[:,:,1] = cv2.blur(im1[:,:,1] ,(10,10), 0)
+
+    cv2.imshow("Result WITH BLUR{}".format(i), im1)
+    
+    #cv2.imwrite("Result{}.jpg".format(i), im1)
 
 #im1 = data3d_brut[:,:,0] # [1,4[
 #im1[:,:,1] = cv2.blur(image_HLS[:,:,1] ,(10,10), 0)
