@@ -63,7 +63,7 @@ initial_image = cv2.imread(path)
 returned_res = add_snow(initial_image)
 returned_res = add_fog(returned_res)
 
-cv2.imshow("Result", returned_res)
+#cv2.imshow("Result", returned_res)
 cv2.imwrite("snowandfog.jpg",returned_res)
 
 #cv2.waitKey(0) 
@@ -74,3 +74,32 @@ cv2.imwrite("snowandfog.jpg",returned_res)
 
 ####################################################################################
 
+# data pre-precessing
+data = sio.loadmat("Sandiego_after_insert_petrol_tnt.mat")
+
+data3d_brut = np.array(data["Sandiego_after_insert_petrol_tnt"], dtype=float)
+# Z == 0
+
+for i in range(0,10, 3):
+    print("i==", i, "i+3 == ", i+3)
+    im1 = data3d_brut[:,:,i:i+4] # [1,4[
+    #im1[:,:,1] = cv2.blur(image_HLS[:,:,1] ,(10,10), 0)
+    cv2.imshow("Result{}".format(i), im1)
+    cv2.imwrite("Result{}.jpg".format(i), im1)
+
+#im1 = data3d_brut[:,:,0] # [1,4[
+#im1[:,:,1] = cv2.blur(image_HLS[:,:,1] ,(10,10), 0)
+
+#cv2.imshow("Result{}".format(1), im1)
+
+"""
+import numpy as np, cv
+vis = np.zeros((384, 836), np.float32)
+h,w = vis.shape
+vis2 = cv.CreateMat(h, w, cv.CV_32FC3)
+vis0 = cv.fromarray(vis)
+"""
+
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
