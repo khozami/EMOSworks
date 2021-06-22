@@ -40,21 +40,10 @@ def add_snow(image, snow_coeff=-1):
 
     return image_RGB
 
-def add_fog(image):    
-    image_HLS = cv2.cvtColor(image,cv2.COLOR_RGB2HLS) ## Conversion to RGB ==> HLS    
-    mask = np.zeros_like(image)
-    print("Shape of mask",image.shape)     
-    imshape = image.shape
-    print("grey scale image shape", image_HLS.shape)    
-    hw=100    
+def add_fog(image_HLS):
     image_HLS[:,:,1]=image_HLS[:,:,1]*0.8    
-    
-    image_HLS[:,:,1][image_HLS[:,:,1]>255]  = 255 ##Sets all values above 255 to 255
     image_HLS[:,:,1] = cv2.blur(image_HLS[:,:,1] ,(10,10), 0)        
-    #image_HLS= add_blur(image_HLS, haze_points[0],haze_points[1], hw) ## adding all shadow polygons on empty mask, single 255 denotes only red channel    
-    image_RGB = cv2.cvtColor(image_HLS,cv2.COLOR_HLS2BGR) ## Conversion to RGB    
-    
-    return image_RGB
+    return image_HLS
 
 path = "./image1.jpg"
 
@@ -64,7 +53,7 @@ returned_res = add_snow(initial_image)
 returned_res = add_fog(returned_res)
 
 #cv2.imshow("Result", returned_res)
-cv2.imwrite("snowandfog.jpg",returned_res)
+#cv2.imwrite("snowandfog.jpg",returned_res)
 
 #cv2.waitKey(0) 
   
@@ -80,32 +69,18 @@ data = sio.loadmat("Sandiego_after_insert_petrol_tnt.mat")
 data3d_brut = np.array(data["Sandiego_after_insert_petrol_tnt"], dtype=float)
 # Z == 0
 
-for i in range(0,10, 3):
+for i in range(0,len(data3d_brut[0,0,:]), 3):
     print("i==", i, "i+3 == ", i+3)
     im1 = data3d_brut[:,:,i:i+4] # [1,4[
     #im1[:,:,1] = cv2.blur(image_HLS[:,:,1] ,(10,10), 0)
     
-    cv2.imshow("Result BEFORE BLUR{}".format(i), im1)
+    #cv2.imshow("Result BEFORE BLUR{}".format(i), im1)
     
-    im1[:,:,1] = cv2.blur(im1[:,:,1] ,(10,10), 0)
-
-    cv2.imshow("Result WITH BLUR{}".format(i), im1)
+    im1 = add_fog(im1)
     
-    #cv2.imwrite("Result{}.jpg".format(i), im1)
+    data3d_brut[:,:,i:i+4] = im1[:,:,0:4]
 
-#im1 = data3d_brut[:,:,0] # [1,4[
-#im1[:,:,1] = cv2.blur(image_HLS[:,:,1] ,(10,10), 0)
-
-#cv2.imshow("Result{}".format(1), im1)
-
-"""
-import numpy as np, cv
-vis = np.zeros((384, 836), np.float32)
-h,w = vis.shape
-vis2 = cv.CreateMat(h, w, cv.CV_32FC3)
-vis0 = cv.fromarray(vis)
-"""
-
-
+    #cv2.imshow("Result WITH BLUR{}".format(i), data3d_brut[:,:,i:i+4])
+    
 cv2.waitKey(0)
 cv2.destroyAllWindows()
