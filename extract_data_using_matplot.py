@@ -35,18 +35,3 @@ ax.set_title("Signature spectrale d'un pixel")
 
 # display the plot
 plt.show()
-
-#trying to male mat file from numpy data
-# data3d.dtype
-#transformed_data3d = {'__header__': b'MATLAB 5.0 MAT-file, Platform: PCWIN64, Created on: Wed Nov 05 20:20:56 2014', '__version__': '1.0', '__globals__': [], 'Sandiego2': data3d}
-#norm = np.linalg.norm(data3d)
-#normal_array = data3d/norm
-#print("---------------------------TRANSFORMED DATA--------------------------------------")
-#print(transformed_data3d)
-#print("---------------------------DATA AS IS--------------------------------------")
-
-
-#data_truth = data3d > 1.0
-#print(data3d.shape)
-# sio.savemat("Sandiego2.mat", transformed_data3d)
-#print(data3d[2:4, 2:4, ...])
